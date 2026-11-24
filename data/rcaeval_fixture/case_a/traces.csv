@@ -1,0 +1,3 @@
+timestamp,service,p99_ms,error_rate
+2026-11-10T10:00:00Z,checkout,1800,0.12
+2026-11-10T10:00:00Z,payment,4800,0.31

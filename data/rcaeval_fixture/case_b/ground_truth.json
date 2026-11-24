@@ -1,0 +1,7 @@
+{
+  "case_id": "re_case_b",
+  "alert_service": "search",
+  "root_cause_service": "redis",
+  "fault_type": "resource_saturation",
+  "topology": {"search": ["redis"]}
+}

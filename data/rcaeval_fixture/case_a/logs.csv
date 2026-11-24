@@ -1,0 +1,3 @@
+timestamp,service,level,message
+2026-11-10T10:01:00Z,checkout,ERROR,upstream timeout calling payment
+2026-11-10T10:01:05Z,payment,ERROR,payment-gateway timeout
