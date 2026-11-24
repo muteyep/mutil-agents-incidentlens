@@ -1,0 +1,45 @@
+{
+  "case_id": "case_003",
+  "alert": {
+    "title": "order 服务 5xx 比例升高",
+    "service": "order",
+    "severity": "P1",
+    "started_at": "2026-11-10T20:00:00Z"
+  },
+  "topology": {
+    "order": ["inventory"]
+  },
+  "ground_truth": {
+    "root_cause_service": "inventory",
+    "fault_type": "error_burst"
+  },
+  "services": {
+    "order": {
+      "metrics": [
+        {"ts": "2026-11-10T19:55:00Z", "p99_ms": 300, "error_rate": 0.01, "cpu": 40},
+        {"ts": "2026-11-10T20:00:00Z", "p99_ms": 600, "error_rate": 0.15, "cpu": 45},
+        {"ts": "2026-11-10T20:05:00Z", "p99_ms": 700, "error_rate": 0.18, "cpu": 50}
+      ],
+      "logs": [
+        {"ts": "2026-11-10T20:01:00Z", "level": "ERROR", "message": "POST /orders 500"},
+        {"ts": "2026-11-10T20:01:02Z", "level": "ERROR", "message": "inventory call failed"}
+      ],
+      "traces": [
+        {"span": "order", "p99_ms": 700, "error_rate": 0.1}
+      ]
+    },
+    "inventory": {
+      "metrics": [
+        {"ts": "2026-11-10T19:55:00Z", "p99_ms": 150, "error_rate": 0.02, "cpu": 25},
+        {"ts": "2026-11-10T20:00:00Z", "p99_ms": 180, "error_rate": 0.03, "cpu": 28}
+      ],
+      "logs": [
+        {"ts": "2026-11-10T20:00:50Z", "level": "ERROR", "message": "NullPointerException in InventoryService"},
+        {"ts": "2026-11-10T20:00:51Z", "level": "ERROR", "message": "missing config: warehouse.id"}
+      ],
+      "traces": [
+        {"span": "inventory", "p99_ms": 700, "error_rate": 0.5}
+      ]
+    }
+  }
+}

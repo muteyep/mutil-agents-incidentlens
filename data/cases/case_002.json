@@ -1,0 +1,45 @@
+{
+  "case_id": "case_002",
+  "alert": {
+    "title": "search 服务超时，怀疑缓存层异常",
+    "service": "search",
+    "severity": "P1",
+    "started_at": "2026-11-10T14:00:00Z"
+  },
+  "topology": {
+    "search": ["redis"]
+  },
+  "ground_truth": {
+    "root_cause_service": "redis",
+    "fault_type": "resource_saturation"
+  },
+  "services": {
+    "search": {
+      "metrics": [
+        {"ts": "2026-11-10T13:55:00Z", "p99_ms": 400, "error_rate": 0.01, "cpu": 40},
+        {"ts": "2026-11-10T14:00:00Z", "p99_ms": 1500, "error_rate": 0.08, "cpu": 55},
+        {"ts": "2026-11-10T14:05:00Z", "p99_ms": 2000, "error_rate": 0.1, "cpu": 60}
+      ],
+      "logs": [
+        {"ts": "2026-11-10T14:01:10Z", "level": "ERROR", "message": "redis timeout after 2000ms"}
+      ],
+      "traces": [
+        {"span": "search", "p99_ms": 1600, "error_rate": 0.1}
+      ]
+    },
+    "redis": {
+      "metrics": [
+        {"ts": "2026-11-10T13:55:00Z", "p99_ms": 800, "error_rate": 0.001, "cpu": 70},
+        {"ts": "2026-11-10T14:00:00Z", "p99_ms": 4500, "error_rate": 0.02, "cpu": 99},
+        {"ts": "2026-11-10T14:05:00Z", "p99_ms": 6000, "error_rate": 0.03, "cpu": 99}
+      ],
+      "logs": [
+        {"ts": "2026-11-10T14:00:30Z", "level": "ERROR", "message": "OOM command not allowed when used memory > maxmemory"},
+        {"ts": "2026-11-10T14:01:00Z", "level": "ERROR", "message": "redis connection reset by peer"}
+      ],
+      "traces": [
+        {"span": "redis", "p99_ms": 3000, "error_rate": 0.05}
+      ]
+    }
+  }
+}

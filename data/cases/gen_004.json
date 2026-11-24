@@ -1,0 +1,105 @@
+{
+  "case_id": "gen_004",
+  "alert": {
+    "title": "api 服务异常",
+    "service": "api",
+    "severity": "P1",
+    "started_at": "2026-11-10T12:00:00Z"
+  },
+  "topology": {
+    "api": [
+      "auth"
+    ],
+    "frontend": [
+      "api"
+    ]
+  },
+  "ground_truth": {
+    "root_cause_service": "auth",
+    "fault_type": "dependency_timeout"
+  },
+  "services": {
+    "api": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 3200,
+          "error_rate": 0.42,
+          "cpu": 60
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "upstream timeout calling dependency"
+        },
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "504 from dependency"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 3000,
+          "error_rate": 0.42
+        }
+      ]
+    },
+    "auth": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 2500,
+          "error_rate": 0.18,
+          "cpu": 70
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "upstream timeout: context deadline exceeded"
+        },
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "gateway timeout"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 2400,
+          "error_rate": 0.2
+        }
+      ]
+    },
+    "frontend": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 150,
+          "error_rate": 0.001,
+          "cpu": 30
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "INFO",
+          "message": "healthy"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 150,
+          "error_rate": 0.001
+        }
+      ]
+    }
+  }
+}

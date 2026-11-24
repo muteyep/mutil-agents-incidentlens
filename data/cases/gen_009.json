@@ -1,0 +1,105 @@
+{
+  "case_id": "gen_009",
+  "alert": {
+    "title": "notify 服务异常",
+    "service": "notify",
+    "severity": "P1",
+    "started_at": "2026-11-10T12:00:00Z"
+  },
+  "topology": {
+    "notify": [
+      "mq"
+    ],
+    "frontend": [
+      "notify"
+    ]
+  },
+  "ground_truth": {
+    "root_cause_service": "mq",
+    "fault_type": "error_burst"
+  },
+  "services": {
+    "notify": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 800,
+          "error_rate": 0.32,
+          "cpu": 50
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "POST /api 500"
+        },
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "downstream call failed"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 750,
+          "error_rate": 0.3
+        }
+      ]
+    },
+    "mq": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 220,
+          "error_rate": 0.03,
+          "cpu": 30
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "NullPointerException in handler"
+        },
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "missing config: service.token"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 720,
+          "error_rate": 0.5
+        }
+      ]
+    },
+    "frontend": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 150,
+          "error_rate": 0.001,
+          "cpu": 30
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "INFO",
+          "message": "healthy"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 150,
+          "error_rate": 0.001
+        }
+      ]
+    }
+  }
+}

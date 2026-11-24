@@ -1,0 +1,59 @@
+{
+  "case_id": "case_001",
+  "alert": {
+    "title": "checkout 服务 P99 延迟与错误率突增",
+    "service": "checkout",
+    "severity": "P1",
+    "started_at": "2026-11-10T10:00:00Z"
+  },
+  "topology": {
+    "checkout": ["payment"],
+    "payment": ["db"]
+  },
+  "ground_truth": {
+    "root_cause_service": "payment",
+    "fault_type": "dependency_timeout"
+  },
+  "services": {
+    "checkout": {
+      "metrics": [
+        {"ts": "2026-11-10T09:55:00Z", "p99_ms": 180, "error_rate": 0.002, "cpu": 35},
+        {"ts": "2026-11-10T10:00:00Z", "p99_ms": 1820, "error_rate": 0.12, "cpu": 55},
+        {"ts": "2026-11-10T10:05:00Z", "p99_ms": 2100, "error_rate": 0.15, "cpu": 60}
+      ],
+      "logs": [
+        {"ts": "2026-11-10T10:01:12Z", "level": "ERROR", "message": "upstream timeout calling payment: context deadline exceeded"},
+        {"ts": "2026-11-10T10:01:40Z", "level": "ERROR", "message": "POST /api/checkout 504 upstream=payment"}
+      ],
+      "traces": [
+        {"span": "checkout", "p99_ms": 1800, "error_rate": 0.12}
+      ]
+    },
+    "payment": {
+      "metrics": [
+        {"ts": "2026-11-10T09:55:00Z", "p99_ms": 95, "error_rate": 0.001, "cpu": 40},
+        {"ts": "2026-11-10T10:00:00Z", "p99_ms": 4600, "error_rate": 0.31, "cpu": 88},
+        {"ts": "2026-11-10T10:05:00Z", "p99_ms": 5200, "error_rate": 0.38, "cpu": 92}
+      ],
+      "logs": [
+        {"ts": "2026-11-10T10:00:55Z", "level": "ERROR", "message": "payment-gateway timeout: context deadline exceeded"},
+        {"ts": "2026-11-10T10:02:10Z", "level": "ERROR", "message": "db pool exhausted: wait timeout 3000ms"}
+      ],
+      "traces": [
+        {"span": "payment", "p99_ms": 4800, "error_rate": 0.31}
+      ]
+    },
+    "db": {
+      "metrics": [
+        {"ts": "2026-11-10T09:55:00Z", "p99_ms": 120, "error_rate": 0.001, "cpu": 45},
+        {"ts": "2026-11-10T10:00:00Z", "p99_ms": 130, "error_rate": 0.002, "cpu": 46}
+      ],
+      "logs": [
+        {"ts": "2026-11-10T10:02:00Z", "level": "WARN", "message": "slow query 4.8s on orders table"}
+      ],
+      "traces": [
+        {"span": "db", "p99_ms": 130, "error_rate": 0.002}
+      ]
+    }
+  }
+}

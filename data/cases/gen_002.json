@@ -1,0 +1,100 @@
+{
+  "case_id": "gen_002",
+  "alert": {
+    "title": "search 服务异常",
+    "service": "search",
+    "severity": "P1",
+    "started_at": "2026-11-10T12:00:00Z"
+  },
+  "topology": {
+    "search": [
+      "redis"
+    ],
+    "frontend": [
+      "search"
+    ]
+  },
+  "ground_truth": {
+    "root_cause_service": "redis",
+    "fault_type": "resource_saturation"
+  },
+  "services": {
+    "search": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 3200,
+          "error_rate": 0.32,
+          "cpu": 60
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "dependency timeout after 2000ms"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 2800,
+          "error_rate": 0.35
+        }
+      ]
+    },
+    "redis": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 5000,
+          "error_rate": 0.03,
+          "cpu": 96
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "OOM command not allowed: used memory > maxmemory"
+        },
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "ERROR",
+          "message": "memory pressure"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 2500,
+          "error_rate": 0.05
+        }
+      ]
+    },
+    "frontend": {
+      "metrics": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "p99_ms": 150,
+          "error_rate": 0.001,
+          "cpu": 30
+        }
+      ],
+      "logs": [
+        {
+          "ts": "2026-11-10T12:00:00Z",
+          "level": "INFO",
+          "message": "healthy"
+        }
+      ],
+      "traces": [
+        {
+          "span": "span",
+          "p99_ms": 150,
+          "error_rate": 0.001
+        }
+      ]
+    }
+  }
+}
